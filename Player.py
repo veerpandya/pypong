@@ -11,13 +11,13 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
         # Variable for length of paddle
-        self.pad_length = 100
+        self.__pad_length = 100
 
         # Sets variable to tell if paddle is already big
-        self.is_big = False
+        self.__is_big = False
 
         # Sets size and color of paddle
-        self.image = pygame.Surface([20, self.pad_length])
+        self.image = pygame.Surface([20, self.__pad_length])
         self.image.fill((250, 250, 250))
 
         # This gets the image dimensions and then lets us set the position
@@ -44,30 +44,34 @@ class Player(pygame.sprite.Sprite):
         self.rect.y = self.y_pos
         self.rect.x = self.x_pos
 
+    # Return big if true
+    def is_big(self):
+        return self.__is_big
+
     # Modifies paddle size to be bigger
     def big_paddle(self):
         # Checks if paddle is already big
-        if not self.is_big:
+        if not self.__is_big:
             # Make paddle bigger by a random amount
-            self.pad_length = random.randrange(125, 200)
-            self.image = pygame.Surface([20, self.pad_length])
+            self.__pad_length = random.randrange(125, 200)
+            self.image = pygame.Surface([20, self.__pad_length])
             self.image.fill((250, 250, 250))
             # Gets new dimensions
             self.rect = self.image.get_rect()
-            # Updates is_big
-            self.is_big = True
+            # Updates __is_big
+            self.__is_big = True
 
     # Resets the paddle back
     def pad_reset(self):
         # Checks if the paddle is big and then resets it
-        if self.is_big:
-            self.pad_length = 100
-            self.image = pygame.Surface([20, self.pad_length])
+        if self.__is_big:
+            self.__pad_length = 100
+            self.image = pygame.Surface([20, self.__pad_length])
             self.image.fill((250, 250, 250))
             # Gets new dimensions
             self.rect = self.image.get_rect()
-            # Updates is_big
-            self.is_big = False
+            # Updates __is_big
+            self.__is_big = False
 
     # Overrides update method from sprite
     # Checks for keyboard input and updates the location of paddle
@@ -89,8 +93,8 @@ class Player(pygame.sprite.Sprite):
         # Keeps the paddle on the screen
         if self.y_pos <= 0:
             self.y_pos = 0
-        if self.y_pos >= self.display_height - self.pad_length:
-            self.y_pos = self.display_height - self.pad_length
+        if self.y_pos >= self.display_height - self.__pad_length:
+            self.y_pos = self.display_height - self.__pad_length
 
         # Updates the image position of the sprite
         self.rect.y = self.y_pos

@@ -23,9 +23,6 @@ pygame.display.set_caption('pypong')
 def game():
     # Sets all the variables and objects before starting the game
 
-    # Make score
-    score = Score(0, 0)
-
     # Make ball
     ball = Ball()
     # Makes group of ball sprites to allow for powerups
@@ -38,6 +35,10 @@ def game():
     # Make players
     p1 = Player("Left")
     p2 = Player("Right")
+
+    # Make score
+    score = Score(p1, p2)
+
     # List of players for paddle reset
     p_list = [p1, p2]
 
@@ -64,15 +65,19 @@ def game():
             if event.type == pygame.QUIT:
                 running = False
 
-        # Checks to see if a powerup already exists
-        # Randomly makes powerup object with 1% chance
-        if not sprites.has(powerup) and random.random() < 0.01:
-            # Makes a new powerup object
-            powerup = Powerup()
-            # If not, add it to the ball group
-            balls.add(powerup)
-            # Add it to the sprite group
-            sprites.add(powerup)
+        # Checks to see if both players already have a powerup
+        # If they do, then don't release another one
+        print(not p1.is_big() or not p2.is_big())
+        if not p1.is_big() or not p2.is_big():
+            # Checks to see if a powerup already exists
+            # Randomly makes powerup object with 1% chance per frame
+            if not sprites.has(powerup) and random.random() < 0.01:
+                # Makes a new powerup object
+                powerup = Powerup()
+                # If not, add it to the ball group
+                balls.add(powerup)
+                # Add it to the sprite group
+                sprites.add(powerup)
 
         # Checks for collision between ball and player
         if pygame.sprite.spritecollide(p1, balls, False):

@@ -84,7 +84,7 @@ class Ball(pygame.sprite.Sprite):
         # Checks if ball is out of bounds on left side
         if self.x_pos <= 0:
             # Gives point to player 2
-            score.increment(2)
+            score.increment(p_list[1])
             # Makes new ball
             self.new_ball()
             # Resets paddle state for player 2
@@ -92,7 +92,7 @@ class Ball(pygame.sprite.Sprite):
         # Checks if ball is out of bounds on right side
         if self.x_pos >= self.display_width:
             # Gives point to player 1
-            score.increment(1)
+            score.increment(p_list[0])
             # Makes new ball
             self.new_ball()
             # Resets paddle state for player 1

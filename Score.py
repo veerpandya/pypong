@@ -4,12 +4,18 @@ import pygame
 # Class to contain and manage player score
 class Score(pygame.sprite.Sprite):
 
-    def __init__(self, p1_score, p2_score):
+    def __init__(self, p1, p2):
         # Uses the sprite constructor from pygame
         pygame.sprite.Sprite.__init__(self)
 
-        self.p1_score = p1_score
-        self.p2_score = p2_score
+        # Assigns the players
+        # Composition with the player class
+        self.p1 = p1
+        self.p2 = p2
+
+        # Initializes the scores
+        self.p1_score = 0
+        self.p2_score = 0
 
         # Sets font
         self.font = pygame.font.Font(None, 69)
@@ -24,16 +30,16 @@ class Score(pygame.sprite.Sprite):
 
     # Adds a point to the correct player
     def increment(self, player):
-        if player == 1:
+        if player == self.p1:
             self.p1_score += 1
-        if player == 2:
+        if player == self.p2:
             self.p2_score += 1
 
     # Returns current score
     def scores(self, player):
-        if player == 1:
+        if player == self.p1:
             return self.p1_score
-        if player == 2:
+        if player == self.p2:
             return self.p2_score
 
     # Checks for winner (first to 5 points)
@@ -58,8 +64,8 @@ class Score(pygame.sprite.Sprite):
     # Updates score on screen
     def update(self, score, p_list):
         # Gets scores
-        p1 = self.scores(1)
-        p2 = self.scores(2)
+        p1 = self.scores(p_list[0])
+        p2 = self.scores(p_list[1])
 
         # Makes and renders string to be displayed
         text = self.font.render(
