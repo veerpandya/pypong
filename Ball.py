@@ -66,7 +66,7 @@ class Ball(pygame.sprite.Sprite):
 
     # Updates the position of the ball based on the speed and direction
     # Overrides Sprite parent method
-    def update(self, score):
+    def update(self, score, p_list):
         # To figure out how far the ball goes in a given direction we use
         # trigonometry, SOH CAH TOA, in this case we know the hypotenuse
         # Python uses radians so we convert our angle
@@ -87,12 +87,16 @@ class Ball(pygame.sprite.Sprite):
             score.increment(2)
             # Makes new ball
             self.new_ball()
+            # Resets paddle state for player 2
+            p_list[1].pad_reset()
         # Checks if ball is out of bounds on right side
         if self.x_pos >= self.display_width:
             # Gives point to player 1
             score.increment(1)
             # Makes new ball
             self.new_ball()
+            # Resets paddle state for player 1
+            p_list[0].pad_reset()
 
         # Checks if ball hits top/bottom of display, and bounces it off
         if self.y_pos <= 0 or self.y_pos > self.display_height - 10:

@@ -46,15 +46,17 @@ class Player(pygame.sprite.Sprite):
         # Make paddle bigger by a random amount
         self.pad_length = random.randrange(125, 200)
         self.image = pygame.Surface([20, self.pad_length])
+        self.image.fill((250, 250, 250))
 
     # Resets the paddle back
     def pad_reset(self):
         self.pad_length = 100
         self.image = pygame.Surface([20, self.pad_length])
+        self.image.fill((250, 250, 250))
 
     # Overrides update method from sprite
     # Checks for keyboard input and updates the location of paddle
-    def update(self, score):
+    def update(self, score, p_list):
 
         # Gets bool list of all keys
         keys = pygame.key.get_pressed()

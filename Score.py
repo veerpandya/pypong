@@ -56,7 +56,7 @@ class Score(pygame.sprite.Sprite):
             return "No one!"
 
     # Updates score on screen
-    def update(self, score):
+    def update(self, score, p_list):
         # Gets scores
         p1 = self.scores(1)
         p2 = self.scores(2)

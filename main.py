@@ -1,7 +1,9 @@
 import pygame
+import random
 from Ball import Ball
 from Score import Score
 from Player import Player
+from Powerup import Powerup
 
 
 # Sets and initializes all the variables and objects before starting the game
@@ -27,9 +29,14 @@ ball = Ball()
 balls = pygame.sprite.Group()
 balls.add(ball)
 
+# Makes the powerup object
+powerup = Powerup()
+
 # Make players
 p1 = Player("Left")
 p2 = Player("Right")
+# List of players for paddle reset
+p_list = [p1, p2]
 
 # Makes list of sprites to add to pygame sprite group
 sprites = pygame.sprite.Group()
@@ -56,6 +63,16 @@ while not score.has_won() and running:
         if event.type == pygame.QUIT:
             running = False
 
+    # Checks to see if a powerup already exists
+    # Randomly makes powerup object with 1% chance
+    if not sprites.has(powerup) and random.random() < 0.01:
+        # Makes a new powerup object
+        powerup = Powerup()
+        # If not, add it to the ball group
+        balls.add(powerup)
+        # Add it to the sprite group
+        sprites.add(powerup)
+
     # Checks for collision between ball and player
     if pygame.sprite.spritecollide(p1, balls, False):
         # Gets list of collided balls
@@ -72,7 +89,7 @@ while not score.has_won() and running:
             ball.reflect(p2)
 
     # Updates all the objects on screen
-    sprites.update(score)
+    sprites.update(score, p_list)
 
     # Draws all the objects
     sprites.draw(screen)

@@ -25,7 +25,7 @@ class Powerup(Ball):
         pygame.sprite.Sprite.kill(self)
 
     # Overrides update method to kill powerup when out of bounds
-    def update(self):
+    def update(self, score, p_list):
         # Mostly the same code from Ball
         rad_angle = math.radians(self.velocity[0])
         delta_y = math.sin(rad_angle) * self.velocity[1]
