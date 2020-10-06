@@ -53,7 +53,7 @@ class Score(pygame.sprite.Sprite):
         elif self.p2_score == 5:
             return "Player 2"
         else:
-            return "No one!"
+            return "No one"
 
     # Updates score on screen
     def update(self, score, p_list):

@@ -6,8 +6,6 @@ from Player import Player
 from Powerup import Powerup
 
 
-# Sets and initializes all the variables and objects before starting the game
-
 # Init pygame
 pygame.init()
 
@@ -20,99 +18,119 @@ screen = pygame.display.set_mode((display_width, display_height))
 # Sets caption of the window
 pygame.display.set_caption('pypong')
 
-# Make score
-score = Score(0, 0)
-
-# Make ball
-ball = Ball()
-# Makes group of ball sprites to allow for powerups
-balls = pygame.sprite.Group()
-balls.add(ball)
-
-# Makes the powerup object
-powerup = Powerup()
-
-# Make players
-p1 = Player("Left")
-p2 = Player("Right")
-# List of players for paddle reset
-p_list = [p1, p2]
-
-# Makes list of sprites to add to pygame sprite group
-sprites = pygame.sprite.Group()
-# Adds our objects to the group so we can call the draw method
-sprites.add(p1)
-sprites.add(p2)
-sprites.add(ball)
-sprites.add(score)
-
-# Creates pygame clock object to manage framerate
-clock = pygame.time.Clock()
-
-# Sets game state
-running = True
 
 # Main loop that runs the game
-while not score.has_won() and running:
+def game():
+    # Sets all the variables and objects before starting the game
 
-    # Refreshes the screen
-    screen.fill((0, 0, 0))
+    # Make score
+    score = Score(0, 0)
 
-    # Ends pygame if reached
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+    # Make ball
+    ball = Ball()
+    # Makes group of ball sprites to allow for powerups
+    balls = pygame.sprite.Group()
+    balls.add(ball)
 
-    # Checks to see if a powerup already exists
-    # Randomly makes powerup object with 1% chance
-    if not sprites.has(powerup) and random.random() < 0.01:
-        # Makes a new powerup object
-        powerup = Powerup()
-        # If not, add it to the ball group
-        balls.add(powerup)
-        # Add it to the sprite group
-        sprites.add(powerup)
+    # Makes the powerup object
+    powerup = Powerup()
 
-    # Checks for collision between ball and player
-    if pygame.sprite.spritecollide(p1, balls, False):
-        # Gets list of collided balls
-        collide_balls = pygame.sprite.spritecollide(p1, balls, False)
-        # Calls their reflect method
-        for ball in collide_balls:
-            ball.reflect(p1)
-    # Do the same for p2
-    if pygame.sprite.spritecollide(p2, balls, False):
-        # Gets list of collided balls
-        collide_balls = pygame.sprite.spritecollide(p2, balls, False)
-        # Calls their reflect method
-        for ball in collide_balls:
-            ball.reflect(p2)
+    # Make players
+    p1 = Player("Left")
+    p2 = Player("Right")
+    # List of players for paddle reset
+    p_list = [p1, p2]
 
-    # Updates all the objects on screen
-    sprites.update(score, p_list)
+    # Makes list of sprites to add to pygame sprite group
+    sprites = pygame.sprite.Group()
+    # Adds our objects to the group so we can call the draw method
+    sprites.add(p1)
+    sprites.add(p2)
+    sprites.add(ball)
+    sprites.add(score)
 
-    # Draws all the objects
-    sprites.draw(screen)
-    # Updates the whole display
+    # Creates pygame clock object to manage framerate
+    clock = pygame.time.Clock()
+
+    # Sets game state
+    running = True
+    while not score.has_won() and running:
+
+        # Refreshes the screen
+        screen.fill((0, 0, 0))
+
+        # Ends pygame if reached
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        # Checks to see if a powerup already exists
+        # Randomly makes powerup object with 1% chance
+        if not sprites.has(powerup) and random.random() < 0.01:
+            # Makes a new powerup object
+            powerup = Powerup()
+            # If not, add it to the ball group
+            balls.add(powerup)
+            # Add it to the sprite group
+            sprites.add(powerup)
+
+        # Checks for collision between ball and player
+        if pygame.sprite.spritecollide(p1, balls, False):
+            # Gets list of collided balls
+            collide_balls = pygame.sprite.spritecollide(p1, balls, False)
+            # Calls their reflect method
+            for ball in collide_balls:
+                ball.reflect(p1)
+        # Do the same for p2
+        if pygame.sprite.spritecollide(p2, balls, False):
+            # Gets list of collided balls
+            collide_balls = pygame.sprite.spritecollide(p2, balls, False)
+            # Calls their reflect method
+            for ball in collide_balls:
+                ball.reflect(p2)
+
+        # Updates all the objects on screen
+        sprites.update(score, p_list)
+
+        # Draws all the objects
+        sprites.draw(screen)
+        # Updates the whole display
+        pygame.display.flip()
+
+        # Increments clock at 60 frames per second
+        clock.tick(60)
+
+    # When someone has won, the loop will end
+    # Displays the winner
+    font = pygame.font.Font(None, 69)
+    text = font.render(
+        f"{score.who_won()} is the winner!", True, (255, 255, 255)
+        )
+
+    # Gets position of text string centered around the specified spot
+    text_rect = text.get_rect(
+        center=(display_width // 2, display_height // 2)
+        )
+    # Updates to the screen
+    screen.blit(text, text_rect)
     pygame.display.flip()
 
-    # Increments clock at 60 frames per second
-    clock.tick(60)
+    # Calls restart method to play again
+    restart()
 
-# When someone has won, the loop will end
-# Displays the winner
-font = pygame.font.Font(None, 69)
-text = font.render(
-    f"{score.who_won()} is the winner!", True, (255, 255, 255)
-    )
 
-# Gets position of text string centered around the specified spot
-text_rect = text.get_rect(
-    center=(display_width // 2, display_height // 2)
-    )
-# Updates to the screen
-screen.blit(text, text_rect)
-pygame.display.flip()
+# Restart method to play another game
+def restart():
+    in_game = False
+    while not in_game:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                in_game = True
+                # Starts a new game
+                game()
 
-# Quits pygame
-pygame.quit()
+
+# Waits for user input before starting game
+restart()
