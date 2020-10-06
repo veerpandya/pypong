@@ -23,7 +23,9 @@ class Ball(pygame.sprite.Sprite):
         self.y_pos = 0
 
         # Variable for angle and speed of the ball [angle, speed]
-        self.velocity = [0, 0]
+        # Protected because we don't want this to be openly changed,
+        # But we do need to change it in the Powerup class
+        self._velocity = [0, 0]
 
         # Assigns variables for the game window's width and height
         self.display_width = pygame.display.get_surface().get_width()
@@ -42,27 +44,27 @@ class Ball(pygame.sprite.Sprite):
         # Determines starting direction of ball randomly
         if random.random() < 0.5:
             # Set initial angle somewhere facing right
-            self.velocity[0] = random.randrange(-60, 60)
+            self._velocity[0] = random.randrange(-60, 60)
             # Set initial speed
-            self.velocity[1] = random.randrange(5, 8)
+            self._velocity[1] = random.randrange(5, 8)
         else:
             # Set initial angle somewhere facing left
-            self.velocity[0] = random.randrange(120, 240)
+            self._velocity[0] = random.randrange(120, 240)
             # Set initial speed
-            self.velocity[1] = random.randrange(5, 8)
+            self._velocity[1] = random.randrange(5, 8)
 
     # Reflects ball off objects
     def reflect(self, player):
         # Adds a bit of randomness to it
         rand = random.randrange(-10, 10)
         # Sets ball angle to the opposite of what it is
-        self.velocity[0] = (180 + rand - self.velocity[0]) % 360
+        self._velocity[0] = (180 + rand - self._velocity[0]) % 360
         # Makes ball speed up random amount
         self.speed(random.uniform(1, 1.2))
 
     # Speeds up the ball by the given multiplier
     def speed(self, multiplier):
-        self.velocity[1] *= multiplier
+        self._velocity[1] *= multiplier
 
     # Updates the position of the ball based on the speed and direction
     # Overrides Sprite parent method
@@ -70,12 +72,12 @@ class Ball(pygame.sprite.Sprite):
         # To figure out how far the ball goes in a given direction we use
         # trigonometry, SOH CAH TOA, in this case we know the hypotenuse
         # Python uses radians so we convert our angle
-        rad_angle = math.radians(self.velocity[0])
+        rad_angle = math.radians(self._velocity[0])
 
         # For the opposite side (change in y_pos) we use sin(θ) * speed
-        delta_y = math.sin(rad_angle) * self.velocity[1]
+        delta_y = math.sin(rad_angle) * self._velocity[1]
         # For the adjacent side (change in x_pos) we use cos(θ) * speed
-        delta_x = math.cos(rad_angle) * self.velocity[1]
+        delta_x = math.cos(rad_angle) * self._velocity[1]
 
         # Updates ball position
         self.y_pos += delta_y
@@ -100,7 +102,7 @@ class Ball(pygame.sprite.Sprite):
 
         # Checks if ball hits top/bottom of display, and bounces it off
         if self.y_pos <= 0 or self.y_pos > self.display_height - 10:
-            self.velocity[0] = (360 - self.velocity[0]) % 360
+            self._velocity[0] = (360 - self._velocity[0]) % 360
 
         # Updates image position of sprite
         self.rect.y = self.y_pos

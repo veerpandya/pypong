@@ -14,8 +14,9 @@ class Score(pygame.sprite.Sprite):
         self.p2 = p2
 
         # Initializes the scores
-        self.p1_score = 0
-        self.p2_score = 0
+        # Private because we don't want it to be changed anywhere outside
+        self.__p1_score = 0
+        self.__p2_score = 0
 
         # Sets font
         self.font = pygame.font.Font(None, 69)
@@ -31,32 +32,32 @@ class Score(pygame.sprite.Sprite):
     # Adds a point to the correct player
     def increment(self, player):
         if player == self.p1:
-            self.p1_score += 1
+            self.__p1_score += 1
         if player == self.p2:
-            self.p2_score += 1
+            self.__p2_score += 1
 
     # Returns current score
     def scores(self, player):
         if player == self.p1:
-            return self.p1_score
+            return self.__p1_score
         if player == self.p2:
-            return self.p2_score
+            return self.__p2_score
 
     # Checks for winner (first to 5 points)
     # Returns True if condition is met
     def has_won(self):
-        if self.p1_score == 5:
+        if self.__p1_score == 5:
             return True
-        elif self.p2_score == 5:
+        elif self.__p2_score == 5:
             return True
         else:
             return False
 
     # Returns who won
     def who_won(self):
-        if self.p1_score == 5:
+        if self.__p1_score == 5:
             return "Player 1"
-        elif self.p2_score == 5:
+        elif self.__p2_score == 5:
             return "Player 2"
         else:
             return "No one"

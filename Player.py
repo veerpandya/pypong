@@ -11,9 +11,11 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
         # Variable for length of paddle
+        # Private because we don't want it changed anywhere else
         self.__pad_length = 100
 
         # Sets variable to tell if paddle is already big
+        # Private because we don't want it changed anywhere else
         self.__is_big = False
 
         # Sets size and color of paddle

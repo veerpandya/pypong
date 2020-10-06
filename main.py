@@ -10,11 +10,13 @@ from Powerup import Powerup
 pygame.init()
 
 # Set dimensions of the game screen
-display_width = 1000
-display_height = 800
+# Proctected because the display is set to a good value for the game
+# But can be changed if desired
+_display_width = 1000
+_display_height = 800
 
 # Make the display
-screen = pygame.display.set_mode((display_width, display_height))
+screen = pygame.display.set_mode((_display_width, _display_height))
 # Sets caption of the window
 pygame.display.set_caption('pypong')
 
@@ -67,7 +69,6 @@ def game():
 
         # Checks to see if both players already have a powerup
         # If they do, then don't release another one
-        print(not p1.is_big() or not p2.is_big())
         if not p1.is_big() or not p2.is_big():
             # Checks to see if a powerup already exists
             # Randomly makes powerup object with 1% chance per frame
@@ -114,7 +115,7 @@ def game():
 
     # Gets position of text string centered around the specified spot
     text_rect = text.get_rect(
-        center=(display_width // 2, display_height // 2)
+        center=(_display_width // 2, _display_height // 2)
         )
     # Updates to the screen
     screen.blit(text, text_rect)
@@ -141,7 +142,7 @@ def restart(first_game):
 
                 # Gets position of string centered around the specified spot
                 text_rect = text.get_rect(
-                    center=(display_width // 2, display_height // 2)
+                    center=(_display_width // 2, _display_height // 2)
                     )
                 # Updates to the screen
                 screen.blit(text, text_rect)

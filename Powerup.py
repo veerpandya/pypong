@@ -27,9 +27,9 @@ class Powerup(Ball):
     # Overrides update method to kill powerup when out of bounds
     def update(self, score, p_list):
         # Mostly the same code from Ball
-        rad_angle = math.radians(self.velocity[0])
-        delta_y = math.sin(rad_angle) * self.velocity[1]
-        delta_x = math.cos(rad_angle) * self.velocity[1]
+        rad_angle = math.radians(self._velocity[0])
+        delta_y = math.sin(rad_angle) * self._velocity[1]
+        delta_x = math.cos(rad_angle) * self._velocity[1]
 
         self.y_pos += delta_y
         self.x_pos += delta_x
@@ -41,7 +41,7 @@ class Powerup(Ball):
 
         # Checks if ball hits top/bottom of display, and bounces it off
         if self.y_pos <= 0 or self.y_pos > self.display_height - 10:
-            self.velocity[0] = (360 - self.velocity[0]) % 360
+            self._velocity[0] = (360 - self._velocity[0]) % 360
 
         # Makes sure the sprite is alive before updating the position
         if pygame.sprite.Sprite.alive(self):
