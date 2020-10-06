@@ -157,5 +157,5 @@ def restart(first_game):
                 game()
 
 
-# Waits for user input before starting game
+# Starts the game
 restart(True)
