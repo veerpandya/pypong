@@ -23,6 +23,9 @@ score = Score(0, 0)
 
 # Make ball
 ball = Ball()
+# Makes group of ball sprites to allow for powerups
+balls = pygame.sprite.Group()
+balls.add(ball)
 
 # Make players
 p1 = Player("Left")
@@ -53,13 +56,23 @@ while not score.has_won() and running:
         if event.type == pygame.QUIT:
             running = False
 
+    # Checks for collision between ball and player
+    if pygame.sprite.spritecollide(p1, balls, False):
+        # Gets list of collided balls
+        collide_balls = pygame.sprite.spritecollide(p1, balls, False)
+        # Calls their reflect method
+        for ball in collide_balls:
+            ball.reflect(p1)
+    # Do the same for p2
+    if pygame.sprite.spritecollide(p2, balls, False):
+        # Gets list of collided balls
+        collide_balls = pygame.sprite.spritecollide(p2, balls, False)
+        # Calls their reflect method
+        for ball in collide_balls:
+            ball.reflect(p2)
+
     # Updates all the objects on screen
     sprites.update(score)
-
-    # Checks for collision between ball and player
-    if (pygame.sprite.collide_rect(p1, ball) or
-       pygame.sprite.collide_rect(ball, p2)):
-        ball.reflect()
 
     # Draws all the objects
     sprites.draw(screen)

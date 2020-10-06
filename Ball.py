@@ -52,7 +52,7 @@ class Ball(pygame.sprite.Sprite):
             self.velocity[1] = random.randrange(5, 8)
 
     # Reflects ball off objects
-    def reflect(self):
+    def reflect(self, player):
         # Adds a bit of randomness to it
         rand = random.randrange(-10, 10)
         # Sets ball angle to the opposite of what it is
