@@ -115,17 +115,36 @@ def game():
     screen.blit(text, text_rect)
     pygame.display.flip()
 
+    # Ends running state
+    running = False
+
     # Calls restart method to play again
-    restart()
+    restart(False)
 
 
 # Restart method to play another game
-def restart():
+def restart(first_game):
     in_game = False
     while not in_game:
         for event in pygame.event.get():
+            # Tells player to press space to start if on first game
+            if first_game:
+                font = pygame.font.Font(None, 69)
+                text = font.render(
+                    "Press Space to Start!", True, (255, 255, 255)
+                    )
+
+                # Gets position of string centered around the specified spot
+                text_rect = text.get_rect(
+                    center=(display_width // 2, display_height // 2)
+                    )
+                # Updates to the screen
+                screen.blit(text, text_rect)
+                pygame.display.flip()
+            # Exits pygame if true
             if event.type == pygame.QUIT:
                 pygame.quit()
+            # Waits for spacebar press to start
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 in_game = True
                 # Starts a new game
@@ -133,4 +152,4 @@ def restart():
 
 
 # Waits for user input before starting game
-restart()
+restart(True)
